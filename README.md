@@ -1,14 +1,14 @@
 # Chat Completions → Responses API 协议转换代理
 
-一个运行在 Cloudflare Workers 上的轻量级 API 协议转换代理。它接收标准的 [OpenAI Chat Completions](https://platform.openai.com/docs/api-reference/chat) 格式请求，自动转换为 [Responses API](https://platform.openai.com/docs/api-reference/responses) 格式发送给上游供应商，再将结果转换回 Chat Completions 格式返回——客户端完全感知不到协议差异。
+一个运行在 Cloudflare Workers 上的轻量级 API 协议转换代理。它接收标准的 [OpenAI Chat Completions](https://platform.openai.com/docs/api-reference/chat) 格式请求，自动转换为 [Responses API](https://platform.openai.com/docs/api-reference/responses) 格式发送给供应商，再将结果转换回 Chat Completions 格式返回——客户端完全感知不到协议差异。
 
 ## 适用场景
 
-你的上游供应商**只支持 Responses API**，但你使用的客户端/工具**只支持 Chat Completions API**。本项目在两者之间架起桥梁。
+你的供应商**只支持 Responses API**，但你使用的客户端/工具**只支持 Chat Completions API**。本项目在两者之间架起桥梁。
 
 ```
-客户端 (Chat Completions) → [Worker 转换] → 上游供应商 (Responses API)
-客户端 (Chat Completions) ← [Worker 转换] ← 上游供应商 (Responses API)
+客户端 (Chat Completions) → [Worker 转换] → 供应商 (Responses API)
+客户端 (Chat Completions) ← [Worker 转换] ← 供应商 (Responses API)
 ```
 
 ## 功能特性
@@ -36,11 +36,11 @@ npm install
 创建 `.dev.vars` 文件用于本地开发：
 
 ```ini
-# 上游 Responses API 的完整地址
+# 供应商 Responses API 的完整地址
 TARGET_URL=https://your-provider.com/v1/responses
 ```
 
-> **说明**：API Key 由客户端请求时通过 `Authorization: Bearer xxx` 头部携带，Worker 会原样透传给上游，无需在环境变量中配置。
+> **说明**：API Key 由客户端请求时通过 `Authorization: Bearer xxx` 头部携带，Worker 会原样透传给供应商，无需在环境变量中配置。
 
 ### 3. 本地开发
 
@@ -85,7 +85,7 @@ npm run deploy
 ```
 
 部署后在 **Cloudflare Dashboard → Workers → Settings → Variables and Secrets** 中添加 `TARGET_URL` 环境变量。
-注意 `TARGET_URL` 即你的提供商的完整的Responses API 地址。
+注意 `TARGET_URL` 即你的供应商的完整的 Responses API 地址。
 
 ## 在客户端中使用
 
@@ -95,7 +95,7 @@ npm run deploy
 https://<your-worker-name>.<your-subdomain>.workers.dev/v1/chat/completions
 ```
 
-API Key 填写你上游供应商的密钥即可。
+API Key 填写你供应商的密钥即可。
 
 ## 协议转换对照表
 
