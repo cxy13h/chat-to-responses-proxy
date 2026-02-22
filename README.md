@@ -85,10 +85,11 @@ npm run deploy
 ```
 
 部署后在 **Cloudflare Dashboard → Workers → Settings → Variables and Secrets** 中添加 `TARGET_URL` 环境变量。
+注意 `TARGET_URL` 即你的提供商的完整的Responses API 地址。
 
 ## 在客户端中使用
 
-部署完成后，你可以在任何兼容 OpenAI API 的客户端中使用，只需将 Base_URL 设置为你的 Worker 地址：
+部署完成后，你可以在任何兼容 OpenAI API 的客户端中使用，只需将 BASE_URL 设置为你的 Worker 地址：
 
 ```
 https://<your-worker-name>.<your-subdomain>.workers.dev/v1/chat/completions
