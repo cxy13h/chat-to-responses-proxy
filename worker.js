@@ -884,7 +884,35 @@ export default {
             return new Response('Only POST requests are supported', { status: 405 });
         }
 
-        // ── 路径检查 ──
+        // ── Responses API 直接透传 ──
+        if (path === '/v1/responses' || path === '/openai/v1/responses') {
+            const upstreamUrl = env.TARGET_URL || 'https://api.openai.com/v1/responses';
+            const authHeader = request.headers.get('Authorization') || '';
+            let resp;
+            try {
+                resp = await fetch(upstreamUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': authHeader,
+                    },
+                    body: request.body,
+                });
+            } catch (err) {
+                return jsonResponse({ error: { message: `上游请求失败: ${err.message}` } }, 502);
+            }
+            // 透传原始响应（含流式 SSE）
+            return new Response(resp.body, {
+                status: resp.status,
+                headers: {
+                    'Content-Type': resp.headers.get('Content-Type') || 'application/json',
+                    'Cache-Control': 'no-cache',
+                    'Access-Control-Allow-Origin': '*',
+                },
+            });
+        }
+
+        // ── 路径检查（Chat Completions）──
         if (path !== '/v1/chat/completions' && path !== '/chat/completions') {
             return jsonResponse({ error: { message: 'Not found', type: 'invalid_request_error', code: 'not_found' } }, 404);
         }
