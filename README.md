@@ -26,8 +26,8 @@
 ### 1. 克隆仓库
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
-cd YOUR_REPO
+git clone https://github.com/cxy13h/chat-to-responses-proxy
+cd chat-to-responses-proxy
 npm install
 ```
 
