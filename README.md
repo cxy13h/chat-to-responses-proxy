@@ -21,7 +21,7 @@
 - ✅ **工具调用（Function Calling）**：完整支持 tool_calls 和 tool 角色消息的转换
 - ✅ **流式响应（SSE）**：实时转换 Responses API 的 SSE 事件为 Chat Completions chunk 格式
 - ✅ **Responses API 直接透传**：`/v1/responses` 路径直接将请求原样转发给供应商
-- ✅ **多变体重试**：自动生成多种请求格式变体，兼容不同上游实现
+- ✅ **多变体重试**：自动生成多种请求格式变体，兼容不同供应商实现
 - ✅ **response_format**：支持 `json_schema` 格式转换
 - ✅ **reasoning_effort**：透传推理强度参数
 
@@ -143,9 +143,9 @@ API Key 填写你供应商的密钥即可。
 | 方法 | 路径 | 说明 |
 |---|---|---|
 | `POST` | `/v1/chat/completions` | Chat Completions 入站，自动转换为 Responses API 后转发 |
-| `POST` | `/v1/responses` | Responses API 直接透传到上游 |
+| `POST` | `/v1/responses` | Responses API 直接透传 |
 | `POST` | `/openai/v1/responses` | 同上（兼容路径） |
-| `GET` | `/v1/models` | 模型列表透传到上游 |
+| `GET` | `/v1/models` | 模型列表透传 |
 | `GET` | `/health` | 健康检查 |
 
 ## 致谢
