@@ -879,6 +879,31 @@ export default {
             return jsonResponse({ ok: true, time: Math.floor(Date.now() / 1000) });
         }
 
+        // ── GET /v1/models 透传 ──
+        if (request.method === 'GET' && (path === '/v1/models' || path === '/models')) {
+            const base = (env.TARGET_URL || 'https://api.openai.com/v1/responses')
+                .replace(/\/v1\/responses.*$/, '')  // 去掉 /v1/responses 及之后的部分
+                .replace(/\/responses.*$/, '');      // 兼容其他路径结尾
+            const modelsUrl = `${base}/v1/models`;
+            const authHeader = request.headers.get('Authorization') || '';
+            let resp;
+            try {
+                resp = await fetch(modelsUrl, {
+                    method: 'GET',
+                    headers: { 'Authorization': authHeader },
+                });
+            } catch (err) {
+                return jsonResponse({ error: { message: `上游请求失败: ${err.message}` } }, 502);
+            }
+            return new Response(resp.body, {
+                status: resp.status,
+                headers: {
+                    'Content-Type': resp.headers.get('Content-Type') || 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                },
+            });
+        }
+
         // ── 仅接受 POST ──
         if (request.method !== 'POST') {
             return new Response('Only POST requests are supported', { status: 405 });

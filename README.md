@@ -145,6 +145,7 @@ API Key 填写你供应商的密钥即可。
 | `POST` | `/v1/chat/completions` | Chat Completions 入站，自动转换为 Responses API 后转发 |
 | `POST` | `/v1/responses` | Responses API 直接透传到上游 |
 | `POST` | `/openai/v1/responses` | 同上（兼容路径） |
+| `GET` | `/v1/models` | 模型列表透传到上游 |
 | `GET` | `/health` | 健康检查 |
 
 ## 致谢
